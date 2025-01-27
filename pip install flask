@@ -1,0 +1,62 @@
+from flask import Flask, 
+render_template, request, 
+rendirect, url_for
+import sqlite3
+
+app= Flask(--name--)
+
+# Configuración de la base de datos (crea la tabla si no existe)
+def create_table():
+conn =
+sqlite3.connect(´events.db´)
+cursor = conn.cursor()
+cursor.execute(´´´
+CREATE TABLE IF NOT EXISTS events (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+nombre TEXT NOT NULL,
+fecha TEXT NOT NULL,
+hora TEXT NOT NULL,
+ubicacion TEXT NOT NULL,
+descripcion TEXT
+)
+´´´)
+conn commit()
+conn.close()
+
+create_table()
+
+@app.router(´/´,methods=[´GET´, ´POST´])
+DEF INDEX():
+conn=
+sqlite3.connect(´events.db´)
+cursor= conn.cursor()
+if request.method==´POST´:
+nombre =
+request.form[´nombre´]
+fecha=request.form[´fecha´]
+hora=request.form[´hora´]
+ubicacion=
+request.form[´ubicacion´]
+descripcion =
+request.form[´descripcion´]
+cursor.execute("INSERT INTO
+events(nombre, fecha, hora, ubicacion, descripcion) VALUES (?,?,?,?,?)",
+(nombre, fecha, hora, ubicacion, descripcion))
+conn.commit()
+return redirect(url_for(´index))
+events=
+cursor.execute(´SELECT*FROM
+events").fetchall()
+conn.close()
+return
+render_templater(´index.html´, events=events)
+
+@app.route(´/delete/<int:id>´)
+def delete(id):
+conn =
+sqlite3.connect(´events.db´)
+cursor = conn.cursor()
+cursor.execute("DELETE FROM
+events WHERE id = ?" , (id,))
+conn.commit()
+conn.close()
