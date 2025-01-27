@@ -1,0 +1,2 @@
+npx create-react-app moz-todo-react
+npx create-react-app moz-todo-react --use-npm
